@@ -1,0 +1,3 @@
+[submodule "repository.supmagc"]
+	path = repository.supmagc
+	url = git@github.com:supmagc/repository.supmagc.git
