@@ -58,15 +58,19 @@ class Generator:
     def __init__(self):
         self.addons = []
 
-        # self._git_pull_submodules()
-        self._detect_projects()
-        self._generate_addons_file()
-        self._generate_md5_file()
-        #self._generate_zip_file()
-        self._package_addons()
+        self._git_pull_submodules()
+
+        #self._detect_projects()
+        #self._generate_addons_file()
+        #self._generate_md5_file()
+        #self._package_addons()
+
         # self._git_commit_push()
         # notify user
-        print("Finished updating addons xml and md5 files")
+        # print("Finished updating addons xml and md5 files")
+
+    def _get_addon_xml_path(self, addon):
+        return os.path.join(addon['path'], "addon.xml")
 
     def _get_addons_xml_path(self):
         return os.path.join(os.getcwd(), "addons.xml")
@@ -82,6 +86,31 @@ class Generator:
             open(file, "wb").write(data)
         except Exception as e:
             print "An error occurred saving {0} file!\n{1}" % (file, e)
+
+    def _git_pull_submodules(self):
+        repo = Repo(os.getcwd())
+        assert not repo.bare
+
+        origin = repo.remotes.origin
+        assert origin.exists()
+
+        print "Fetching and pulling kodiaddons repo."
+        origin.fetch()
+        origin.pull()
+
+        submodules = repo.submodules
+        for submodule in submodules:
+            assert submodule.module_exists()
+            assert submodule.exists()
+
+            module = submodule.module()
+            print "Found submodule {0} on {1}".format(submodule.name, submodule.branch)#module.active_branch)
+
+            # submodule.branch = module.branches.master
+            submodule.update(init=True, to_latest_revision=True)
+            pass
+
+        pass
 
     def _detect_projects(self):
         root_directory = os.getcwd()
@@ -104,7 +133,7 @@ class Generator:
         for addon in self.addons:
             try:
                 # create path
-                addon_xml_path = os.path.join(addon['path'], "addon.xml")
+                addon_xml_path = self._get_addon_xml_path(addon)
                 # split lines for stripping
                 xml_lines = self._load_file(addon_xml_path).splitlines()
                 # new addon
@@ -149,7 +178,7 @@ class Generator:
             print "An error occurred creating {0} file!\n{1}".format(addons_xml_md5_path, e)
 
     def _get_plugin_version(self, addon):
-        addon_xml = os.path.join(addon['path'], 'addon.xml')
+        addon_xml = self._get_addon_xml_path(addon)
         try:
             data = open(addon_xml, 'r').read()
             node = xml.etree.ElementTree.XML(data)
@@ -159,16 +188,23 @@ class Generator:
 
     def _package_addons(self):
         for addon in self.addons:
+            addon_name = addon['name']
             addon_path = addon['path']
             version = self._get_plugin_version(addon)
             zip_path = os.path.join(addon_path, addon['name'] + '-' + version + '.zip')
             with ZipFile(zip_path, 'w') as addon_zip:
                 for root, dirs, files in os.walk(addon_path):
-                    for file_path in files:
-                        if file_path.endswith('.zip'):
+                    rel_path = os.path.relpath(root, addon_path)
+                    if rel_path == ".": rel_path = ""
+                    root_zip_path = os.path.join(addon_name, rel_path)
+                    addon_zip.write(root, root_zip_path)
+                    for file_name in files:
+                        file_path = os.path.join(root, file_name)
+                        file_zip_path = os.path.join(root_zip_path, file_name)
+                        if file_name.endswith('.zip') or file_name.startswith("."):
                             continue
-                        print "Adding {0} to {1}".format(os.path.join(addon_path, file_path), zip_path)
-                        addon_zip.write(os.path.join(root, file_path))
+                        print "Adding {0} as {1} to {2}".format(file_path, file_zip_path, zip_path)
+                        addon_zip.write(file_path, file_zip_path)
                 addon_zip.close()
                 print "Merged addon {0} into {1}".format(addon['name'], zip_path)
 
