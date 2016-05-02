@@ -59,21 +59,26 @@ class Generator:
         self.addons = []
 
         self._git_pull_submodules()
+        self._detect_projects()
+        self._generate_addons_file()
+        self._generate_md5_file()
+        self._package_addons()
+        #self._git_commit_push()
 
-        #self._detect_projects()
-        #self._generate_addons_file()
-        #self._generate_md5_file()
-        #self._package_addons()
-
-        # self._git_commit_push()
-        # notify user
-        # print("Finished updating addons xml and md5 files")
+    def _get_src_root_path(self):
+        return os.path.join(os.getcwd(), "src")
 
     def _get_addon_xml_path(self, addon):
         return os.path.join(addon['path'], "addon.xml")
 
     def _get_addons_xml_path(self):
         return os.path.join(os.getcwd(), "addons.xml")
+
+    def _get_addons_xml_md5_path(self):
+        return os.path.join(os.getcwd(), "addons.xml.md5")
+
+    def _get_zip_path(self, addon, version):
+        return os.path.join(os.getcwd(), addon['name'], addon['name'] + '-' + version + '.zip')
 
     def _load_file(self, file):
         try:
@@ -86,6 +91,17 @@ class Generator:
             open(file, "wb").write(data)
         except Exception as e:
             print "An error occurred saving {0} file!\n{1}" % (file, e)
+
+    def _git_add_file(self, path, message):
+        repo = Repo(os.getcwd())
+        assert not repo.bare
+        index = repo.index
+
+        rel_path = os.path.relpath(path)
+        print os.getcwd() + " " + path + " >> " + rel_path
+
+        index.add([rel_path])
+        index.commit(message)
 
     def _git_pull_submodules(self):
         repo = Repo(os.getcwd())
@@ -104,16 +120,15 @@ class Generator:
             assert submodule.exists()
 
             module = submodule.module()
-            print "Found submodule {0} on {1}".format(submodule.name, submodule.branch)#module.active_branch)
+            print "Found submodule {0} on {1}".format(submodule.name, submodule.branch)
 
-            # submodule.branch = module.branches.master
             submodule.update(init=True, to_latest_revision=True)
             pass
 
         pass
 
     def _detect_projects(self):
-        root_directory = os.getcwd()
+        root_directory = self._get_src_root_path()
         sub_directories = os.listdir(root_directory)
         for sub_directory in sub_directories:
             path = os.path.join(root_directory, sub_directory)
@@ -159,6 +174,7 @@ class Generator:
         addons_xml_path = self._get_addons_xml_path()
         try:
             self._save_file(addons_xml.encode("UTF-8"), file=addons_xml_path)
+            self._git_add_file(addons_xml_path, "Newly generated addons.xml")
             print "Wrote addons list to {0}".format(addons_xml_path)
         except Exception as e:
             print "An error occurred creating {0} file!\n{1}".format(addons_xml_path, e)
@@ -167,12 +183,13 @@ class Generator:
         # create a new md5 hash
         import hashlib
         addons_xml_path = self._get_addons_xml_path()
-        addons_xml_md5_path = addons_xml_path + ".md5"
-        m = hashlib.md5(self._load_file(addons_xml_path).encode("UTF-8")).hexdigest()
+        addons_xml_md5_path = self._get_addons_xml_md5_path()
+        m = hashlib.md5(self._load_file(addons_xml_path)).hexdigest()
 
         # save file
         try:
             self._save_file(m.encode("UTF-8"), file=addons_xml_md5_path)
+            self._git_add_file(addons_xml_md5_path, "Newly generated addons.xml.md5")
             print "Wrote addons md5 for {0} to {1}".format(addons_xml_path, addons_xml_md5_path)
         except Exception as e:
             print "An error occurred creating {0} file!\n{1}".format(addons_xml_md5_path, e)
@@ -191,7 +208,12 @@ class Generator:
             addon_name = addon['name']
             addon_path = addon['path']
             version = self._get_plugin_version(addon)
-            zip_path = os.path.join(addon_path, addon['name'] + '-' + version + '.zip')
+            zip_path = self._get_zip_path(addon, version)
+            zip_path_parent = os.path.dirname(zip_path)
+
+            if not os.path.exists(zip_path_parent):
+                os.mkdir(zip_path_parent)
+
             with ZipFile(zip_path, 'w') as addon_zip:
                 for root, dirs, files in os.walk(addon_path):
                     rel_path = os.path.relpath(root, addon_path)
@@ -206,31 +228,16 @@ class Generator:
                         print "Adding {0} as {1} to {2}".format(file_path, file_zip_path, zip_path)
                         addon_zip.write(file_path, file_zip_path)
                 addon_zip.close()
+                self._git_add_file(zip_path, "Generated zip file for {0} at {1}".format(addon_name, version))
                 print "Merged addon {0} into {1}".format(addon['name'], zip_path)
 
     def _git_commit_push(self):
-        print "Adding, comitting and pushing content online."
-        repo = Repo(".")
+        repo = Repo(os.getcwd())
         assert not repo.bare
-
-        git = repo.git
-        command = "\"%s\" -i \"%s\"" % (g_ssh, g_sshkey)
-        print "Ssh: " + command
-        git.custom_environment(GIT_SSH=g_ssh)
-        git.custom_environment(GIT_SSH_COMMAND=command)
-        print git.checkout('master')
-
-        # index = repo.index
-        # print index.add(".")
-        # for en in index.entries:
-        #    print en
-        # print index.commit("Automatically generated commit")
-        # print git.add("-A")
-
         origin = repo.remotes.origin
         assert origin.exists()
-        print origin.fetch(progress=MyProgressPrinter())
-        print origin.push(progress=MyProgressPrinter())
+        origin.push()
+        print "Pushed content to remote"
 
 
 if (__name__ == "__main__"):
