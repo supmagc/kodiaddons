@@ -100,8 +100,10 @@ class Generator:
         rel_path = os.path.relpath(path)
         print os.getcwd() + " " + path + " >> " + rel_path
 
-        index.add([rel_path])
-        index.commit(message)
+        diff = index.diff(None)
+
+        #index.add([rel_path])
+        #index.commit(message)
 
     def _git_pull_submodules(self):
         repo = Repo(os.getcwd())
@@ -123,6 +125,8 @@ class Generator:
             print "Found submodule {0} on {1}".format(submodule.name, submodule.branch)
 
             submodule.update(init=True, to_latest_revision=True)
+            if True:
+                self._git_add_file(submodule.path, "Updated {0} on branch {1} to latest version".format(submodule.name, submodule.branch))
             pass
 
         pass
