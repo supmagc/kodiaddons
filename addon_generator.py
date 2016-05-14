@@ -63,7 +63,7 @@ class Generator:
         self._generate_addons_file()
         self._generate_md5_file()
         self._package_addons()
-        #self._git_commit_push()
+        self._git_commit_push()
 
     def _get_src_root_path(self):
         return os.path.join(os.getcwd(), "src")
@@ -97,13 +97,14 @@ class Generator:
         assert not repo.bare
         index = repo.index
 
-        rel_path = os.path.relpath(path)
+        rel_path = os.path.relpath(path).replace("\\", "/")
         print os.getcwd() + " " + path + " >> " + rel_path
 
         diff = index.diff(None)
 
-        #index.add([rel_path])
-        #index.commit(message)
+        if len([i for i in diff if not i.deleted_file and i.b_path == rel_path]) > 0:
+            repo.git.add(rel_path)
+            repo.git.commit(m=message)
 
     def _git_pull_submodules(self):
         repo = Repo(os.getcwd())
@@ -112,9 +113,11 @@ class Generator:
         origin = repo.remotes.origin
         assert origin.exists()
 
-        print "Fetching and pulling kodiaddons repo."
+        print "Fetching and pulling kodiaddons repo on develop."
         origin.fetch()
         origin.pull()
+        repo.heads.develop.checkout()
+
 
         submodules = repo.submodules
         for submodule in submodules:
@@ -125,8 +128,7 @@ class Generator:
             print "Found submodule {0} on {1}".format(submodule.name, submodule.branch)
 
             submodule.update(init=True, to_latest_revision=True)
-            if True:
-                self._git_add_file(submodule.path, "Updated {0} on branch {1} to latest version".format(submodule.name, submodule.branch))
+            self._git_add_file(submodule.path, "Updated {0} on branch {1} to latest version".format(submodule.name, submodule.branch))
             pass
 
         pass
@@ -241,7 +243,8 @@ class Generator:
         origin = repo.remotes.origin
         assert origin.exists()
         origin.push()
-        print "Pushed content to remote"
+        print "Pushed content to remote on develop"
+        print "Merge to master manually if verified"
 
 
 if (__name__ == "__main__"):
