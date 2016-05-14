@@ -1,3 +1,8 @@
-[submodule "repository.supmagc"]
-	path = repository.supmagc
+[submodule "src/repository.supmagc"]
+	path = src/repository.supmagc
 	url = git@github.com:supmagc/repository.supmagc.git
+	branch = master
+[submodule "src/service.skin.widgets"]
+	path = src/service.skin.widgets
+	url = git@github.com:supmagc/service.skin.widgets.git
+	branch = master
