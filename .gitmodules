@@ -6,3 +6,9 @@
 	path = src/service.skin.widgets
 	url = git@github.com:supmagc/service.skin.widgets.git
 	branch = master
+[submodule "src/resource.images.moviegenreicons.xzener-flat.dutch"]
+	path = src/resource.images.moviegenreicons.xzener-flat.dutch
+	url = git@github.com:supmagc/resource.images.moviegenreicons.xzener-flat.dutch.git
+[submodule "src/resource.images.moviegenreicons.grey.dutch"]
+	path = src/resource.images.moviegenreicons.grey.dutch
+	url = git@github.com:supmagc/resource.images.moviegenreicons.grey.dutch.git
