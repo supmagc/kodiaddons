@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Terminal (integrated)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/addon_generator.py",
+            "console": "integratedTerminal"
+        },
+    ],
+    "compounds": []
+}

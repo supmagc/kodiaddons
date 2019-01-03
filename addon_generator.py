@@ -27,14 +27,9 @@ from git import Repo, RemoteProgress
 from zipfile import ZipFile
 from shutil import copytree, ignore_patterns, rmtree
 
-g_ssh = "C:\Program Files (x86)\PuTTY\plink.exe"
-g_sshkey = "D:\Jelle\Documents\Ssh\github.ppk"
-g_projects = []  # 'plugin.video.netflixbmc']
-
 # Compatibility with 3.0, 3.1 and 3.2 not supporting u"" literals
 if sys.version < '3':
     import codecs
-
 
     def u(x):
         return codecs.unicode_escape_decode(x)[0]
@@ -42,6 +37,8 @@ else:
     def u(x):
         return x
 
+# g_ssh = u('C:\\Program Files (x86)\\PuTTY\\plink.exe')
+# g_sshkey = u('C:\\Users\\supma\\OneDrive\\Ssh\\github.ppk')
 
 class MyProgressPrinter(RemoteProgress):
     def update(self, op_code, cur_count, max_count=None, message=''):
@@ -82,15 +79,15 @@ class Generator:
 
     def _load_file(self, file):
         try:
-            return open(file, "r").read()
+            return open(file, mode="r", encoding='utf-8').read()
         except Exception as e:
-            print "An error occurred loading {0} file!\n{1}" % (file, e)
+            print('An error occurred loading {0} file!\n{1}'.format(file, e))
 
     def _save_file(self, data, file):
         try:
-            open(file, "wb").write(data)
+            open(file, mode="wb", encoding='utf-8').write(data)
         except Exception as e:
-            print "An error occurred saving {0} file!\n{1}" % (file, e)
+            print('An error occurred saving {0} file!\n{1}'.format(file, e))
 
     def _git_add_file(self, path, message):
         repo = Repo(os.getcwd())
@@ -98,7 +95,7 @@ class Generator:
         index = repo.index
 
         rel_path = os.path.relpath(path).replace("\\", "/")
-        print os.getcwd() + " " + path + " >> " + rel_path
+        print(os.getcwd() + " " + path + " >> " + rel_path)
 
         diff = index.diff(None)
 
@@ -113,11 +110,10 @@ class Generator:
         origin = repo.remotes.origin
         assert origin.exists()
 
-        print "Fetching and pulling kodiaddons repo on develop."
+        print('Fetching and pulling kodiaddons repo on develop.')
         origin.fetch()
         origin.pull()
         repo.heads.develop.checkout()
-
 
         submodules = repo.submodules
         for submodule in submodules:
@@ -125,10 +121,10 @@ class Generator:
             assert submodule.exists()
 
             module = submodule.module()
-            print "Found submodule {0} on {1}".format(submodule.name, submodule.branch)
+            print('Found submodule {0} on {1}'.format(submodule.name, submodule.branch))
 
             submodule.update(init=True, to_latest_revision=True)
-            self._git_add_file(submodule.path, "Updated {0} on branch {1} to latest version".format(submodule.name, submodule.branch))
+            self._git_add_file(submodule.path, 'Updated {0} on branch {1} to latest version'.format(submodule.name, submodule.branch))
             pass
 
         pass
@@ -139,7 +135,7 @@ class Generator:
         for sub_directory in sub_directories:
             path = os.path.join(root_directory, sub_directory)
             if not sub_directory.startswith(".") and os.path.isdir(path):
-                print "Detected addon {0} in {1}".format(sub_directory, path)
+                print('Detected addon {0} in {1}'.format(sub_directory, path))
                 self.addons.append({
                     'name': sub_directory,
                     'path': path
@@ -165,13 +161,13 @@ class Generator:
                     if line.find("<?xml") >= 0: continue
                     # add line
                     if sys.version < '3':
-                        addon_xml += unicode(line.rstrip() + "\n", "UTF-8")
+                        addon_xml += u(line.rstrip() + "\n", "UTF-8")
                     else:
                         addon_xml += line.rstrip() + "\n"
                 # we succeeded so add to our final addons.xml text
                 addons_xml += addon_xml.rstrip() + "\n\n"
             except Exception as e:
-                print "Excluding {0} for {1}".format(addon_xml_path, e)
+                print('Excluding {0} for {1}'.format(addon_xml_path, e))
 
         # clean and add closing tag
         addons_xml = addons_xml.strip() + u("\n</addons>\n")
@@ -181,24 +177,24 @@ class Generator:
         try:
             self._save_file(addons_xml.encode("UTF-8"), file=addons_xml_path)
             self._git_add_file(addons_xml_path, "Newly generated addons.xml")
-            print "Wrote addons list to {0}".format(addons_xml_path)
+            print('Wrote addons list to {0}'.format(addons_xml_path))
         except Exception as e:
-            print "An error occurred creating {0} file!\n{1}".format(addons_xml_path, e)
+            print('An error occurred creating {0} file!\n{1}'.format(addons_xml_path, e))
 
     def _generate_md5_file(self):
         # create a new md5 hash
         import hashlib
         addons_xml_path = self._get_addons_xml_path()
         addons_xml_md5_path = self._get_addons_xml_md5_path()
-        m = hashlib.md5(self._load_file(addons_xml_path)).hexdigest()
+        m = hashlib.md5(self._load_file(addons_xml_path).encode('utf-8')).hexdigest()
 
         # save file
         try:
             self._save_file(m.encode("UTF-8"), file=addons_xml_md5_path)
             self._git_add_file(addons_xml_md5_path, "Newly generated addons.xml.md5")
-            print "Wrote addons md5 for {0} to {1}".format(addons_xml_path, addons_xml_md5_path)
+            print('Wrote addons md5 for {0} to {1}'.format(addons_xml_path, addons_xml_md5_path))
         except Exception as e:
-            print "An error occurred creating {0} file!\n{1}".format(addons_xml_md5_path, e)
+            print('An error occurred creating {0} file!\n{1}'.format(addons_xml_md5_path, e))
 
     def _get_plugin_version(self, addon):
         addon_xml = self._get_addon_xml_path(addon)
@@ -207,7 +203,7 @@ class Generator:
             node = xml.etree.ElementTree.XML(data)
             return node.get('version')
         except Exception as e:
-            print 'Failed to open {0} to extract version\n{1}'.format(addon_xml, e)
+            print('Failed to open {0} to extract version\n{1}'.format(addon_xml, e))
 
     def _package_addons(self):
         for addon in self.addons:
@@ -231,11 +227,11 @@ class Generator:
                         file_zip_path = os.path.join(root_zip_path, file_name)
                         if file_name.endswith('.zip') or file_name.startswith("."):
                             continue
-                        print "Adding {0} as {1} to {2}".format(file_path, file_zip_path, zip_path)
+                        print('Adding {0} as {1} to {2}'.format(file_path, file_zip_path, zip_path))
                         addon_zip.write(file_path, file_zip_path)
                 addon_zip.close()
-                self._git_add_file(zip_path, "Generated zip file for {0} at {1}".format(addon_name, version))
-                print "Merged addon {0} into {1}".format(addon['name'], zip_path)
+                self._git_add_file(zip_path, 'Generated zip file for {0} at {1}'.format(addon_name, version))
+                print('Merged addon {0} into {1}'.format(addon['name'], zip_path))
 
     def _git_commit_push(self):
         repo = Repo(os.getcwd())
@@ -243,8 +239,8 @@ class Generator:
         origin = repo.remotes.origin
         assert origin.exists()
         origin.push()
-        print "Pushed content to remote on develop"
-        print "Merge to master manually if verified"
+        print('Pushed content to remote on develop')
+        print('Merge to master manually if verified')
 
 
 if (__name__ == "__main__"):
