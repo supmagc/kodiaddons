@@ -4,13 +4,13 @@
 			"path": "."
 		},
 		{
-			"path": "E:\\Projects\\plugin.video.kodiflix"
+			"path": "..\\plugin.video.kodiflix"
 		},
 		{
-			"path": "E:\\Projects\\plugin.video.netflixbmc"
+			"path": "..\\plugin.video.netflixbmc"
 		},
 		{
-			"path": "E:\\Projects\\plugin.video.youtube"
+			"path": "..\\plugin.video.youtube"
 		}
 	],
 	"settings": {}
