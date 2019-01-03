@@ -60,7 +60,7 @@ class Generator:
         self._generate_addons_file()
         self._generate_md5_file()
         self._package_addons()
-        #self._git_commit_push()
+        self._git_commit_push()
 
     def _get_src_root_path(self):
         return os.path.join(os.getcwd(), "src")
