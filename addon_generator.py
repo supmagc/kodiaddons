@@ -111,9 +111,9 @@ class Generator:
         assert origin.exists()
 
         print('Fetching and pulling kodiaddons repo on develop.')
-        #origin.fetch()
-        #origin.pull()
-        #repo.heads.develop.checkout()
+        origin.fetch()
+        origin.pull()
+        repo.heads.develop.checkout()
 
         submodules = repo.submodules
         for submodule in submodules:
