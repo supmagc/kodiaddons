@@ -1,12 +1,12 @@
 [submodule "src/repository.supmagc"]
 	path = src/repository.supmagc
-	url = git@github.com:supmagc/repository.supmagc.git
+	url = git@github.com:supmagc/kodi-repository.supmagc.git
 	branch = master
 [submodule "src/resource.images.moviegenreicons.xzener-flat.dutch"]
 	path = src/resource.images.moviegenreicons.xzener-flat.dutch
-	url = git@github.com:supmagc/resource.images.moviegenreicons.xzener-flat.dutch.git
+	url = git@github.com:supmagc/kodi-resource.images.moviegenreicons.xzener-flat.dutch.git
 	branch = master
 [submodule "src/resource.images.moviegenreicons.grey.dutch"]
 	path = src/resource.images.moviegenreicons.grey.dutch
-	url = git@github.com:supmagc/resource.images.moviegenreicons.grey.dutch.git
+	url = git@github.com:supmagc/kodi-resource.images.moviegenreicons.grey.dutch.git
 	branch = master
