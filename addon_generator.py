@@ -240,7 +240,7 @@ class Generator:
         repo.index.commit('Automated addon_genenrator.py commit')
         origin = repo.remotes.origin
         assert origin.exists()
-        origin.push()
+        origin.push('develop:develop')
         print('Pushed content to remote on develop')
         print('Merge to master manually if verified')
 
