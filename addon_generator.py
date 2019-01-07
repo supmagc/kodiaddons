@@ -238,7 +238,7 @@ class Generator:
         assert not repo.bare
         origin = repo.remotes.origin
         assert origin.exists()
-        origin.push()
+        origin.push('develop:develop')
         print('Pushed content to remote on develop')
         print('Merge to master manually if verified')
 

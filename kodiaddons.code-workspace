@@ -4,13 +4,22 @@
 			"path": "."
 		},
 		{
-			"path": "E:\\Projects\\plugin.video.kodiflix"
+			"path": "..\\plugin.video.kodiflix"
 		},
 		{
-			"path": "E:\\Projects\\plugin.video.netflixbmc"
+			"path": "..\\plugin.video.netflixbmc"
 		},
 		{
-			"path": "E:\\Projects\\plugin.video.youtube"
+			"path": "..\\plugin.video.youtube"
+		},
+		{
+			"path": "..\\kodi-repository.supmagc"
+		},
+		{
+			"path": "..\\kodi-resource.images.moviegenreicons.grey.dutch"
+		},
+		{
+			"path": "..\\kodi-resource.images.moviegenreicons.xzener-flat.dutch"
 		}
 	],
 	"settings": {}
