@@ -236,8 +236,6 @@ class Generator:
     def _git_commit_push(self):
         repo = Repo(os.getcwd())
         assert not repo.bare
-        repo.index.add('*')
-        repo.index.commit('Automated addon_genenrator.py commit')
         origin = repo.remotes.origin
         assert origin.exists()
         origin.push('develop:develop')
