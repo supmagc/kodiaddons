@@ -85,7 +85,7 @@ class Generator:
 
     def _save_file(self, data, file):
         try:
-            open(file, mode="wb", encoding='utf-8').write(data)
+            open(file, mode="w", encoding='utf-8').write(data)
         except Exception as e:
             print('An error occurred saving {0} file!\n{1}'.format(file, e))
 
@@ -175,7 +175,7 @@ class Generator:
         # save file
         addons_xml_path = self._get_addons_xml_path()
         try:
-            self._save_file(addons_xml.encode("UTF-8"), file=addons_xml_path)
+            self._save_file(addons_xml, file=addons_xml_path)
             self._git_add_file(addons_xml_path, "Newly generated addons.xml")
             print('Wrote addons list to {0}'.format(addons_xml_path))
         except Exception as e:
@@ -190,7 +190,7 @@ class Generator:
 
         # save file
         try:
-            self._save_file(m.encode("UTF-8"), file=addons_xml_md5_path)
+            self._save_file(m, file=addons_xml_md5_path)
             self._git_add_file(addons_xml_md5_path, "Newly generated addons.xml.md5")
             print('Wrote addons md5 for {0} to {1}'.format(addons_xml_path, addons_xml_md5_path))
         except Exception as e:
@@ -220,11 +220,9 @@ class Generator:
                 for root, dirs, files in os.walk(addon_path):
                     rel_path = os.path.relpath(root, addon_path)
                     if rel_path == ".": rel_path = ""
-                    root_zip_path = os.path.join(addon_name, rel_path)
-                    addon_zip.write(root, root_zip_path)
                     for file_name in files:
                         file_path = os.path.join(root, file_name)
-                        file_zip_path = os.path.join(root_zip_path, file_name)
+                        file_zip_path = os.path.join(rel_path, file_name)
                         if file_name.endswith('.zip') or file_name.startswith("."):
                             continue
                         print('Adding {0} as {1} to {2}'.format(file_path, file_zip_path, zip_path))
