@@ -220,9 +220,11 @@ class Generator:
                 for root, dirs, files in os.walk(addon_path):
                     rel_path = os.path.relpath(root, addon_path)
                     if rel_path == ".": rel_path = ""
+                    root_zip_path = os.path.join(addon_name, rel_path)
+                    addon_zip.write(root, root_zip_path)
                     for file_name in files:
                         file_path = os.path.join(root, file_name)
-                        file_zip_path = os.path.join(rel_path, file_name)
+                        file_zip_path = os.path.join(root_zip_path, file_name)
                         if file_name.endswith('.zip') or file_name.startswith("."):
                             continue
                         print('Adding {0} as {1} to {2}'.format(file_path, file_zip_path, zip_path))
