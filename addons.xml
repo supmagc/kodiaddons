@@ -14,15 +14,54 @@
 	</extension>
 </addon>
 
-<addon id="resource.images.moviegenreicons.grey.dutch" name="Movie Genre Icons - Grey - Dutch" version="0.0.7" provider-name="Team Kodi">
-	<extension point="kodi.resource.images" compile="true" type="moviegenreicons" />
+<addon id="resource.images.moviegenreicons.grey.dutch" name="Movie Genre Icons - Grey - Dutch" version="0.1.0" provider-name="supmagc, Team-Kodi">
 	<requires>
 		<import addon="kodi.resource" version="1.0.0"/>
 	</requires>
+	<extension point="kodi.resource.images" compile="true" type="moviegenreicons" />
 	<extension point="xbmc.addon.metadata">
-		<summary lang="en">Grey Movie Genre Icons Dutch</summary>
-		<description lang="en">Grey Movie Genre Icons Dutch</description>
+		<license>Creative Commons Attribution-Share Alike 3.0 United States License</license>
 		<platform>all</platform>
+		<language></language>
+		<summary lang="en_GB">Grey Movie Genre Icons Dutch</summary>
+		<description lang="en_GB">Grey Movie Genre Icons Dutch</description>
+		<disclaimer lang="en_GB">You are free to:
+	> Share - Copy and redistribute the material in any medium or format.
+	> Adapt - Remix, transform, and build upon the material for any purpose, even commercially.
+
+Under the following terms:
+	> Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+	> ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</disclaimer>
+		<news lang="en_GB">v0.1.0
+- Make Krypton compatible
+
+v0.0.7
+- Fix potential texture issues
+
+v0.0.6
+- Add info file
+
+v0.0.5
+- Use baseline JPEG
+
+v0.0.4
+- No change
+
+v0.0.3
+- Add compile flag for packaging
+
+v0.0.2
+- Compress into XBT file
+
+v0.0.1
+- Initial release</news>
+		<forum></forum>
+		<website>https://github.com/supmagc/kodi-resource.images.moviegenreicons.grey.dutch</website>
+		<source>https://github.com/supmagc/kodi-resource.images.moviegenreicons.grey.dutch</source>
+		<email>supmagc at gmail dot com</email>
+		<assets>
+			<icon>resources/icon.png</icon>
+		</assets>
 	</extension>
 </addon>
 
