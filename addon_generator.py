@@ -57,6 +57,7 @@ class Generator:
 
         self._git_pull_submodules()
         self._detect_projects()
+        self._pack_textures()
         self._generate_addons_file()
         self._generate_md5_file()
         self._package_addons()
@@ -65,8 +66,11 @@ class Generator:
     def _get_src_root_path(self):
         return os.path.join(os.getcwd(), "src")
 
+    def _get_addon_root_path(self, addon):
+        return os.path.join(addon['path'])
+
     def _get_addon_xml_path(self, addon):
-        return os.path.join(addon['path'], "addon.xml")
+        return os.path.join(self._get_addon_root_path(addon), "addon.xml")
 
     def _get_addons_xml_path(self):
         return os.path.join(os.getcwd(), "addons.xml")
@@ -123,6 +127,7 @@ class Generator:
             module = submodule.module()
             print('Found submodule {0} on {1}'.format(submodule.name, submodule.branch))
 
+            module.remotes.origin.pull(submodule.branch)
             submodule.update(init=True, to_latest_revision=True)
             self._git_add_file(submodule.path, 'Updated {0} on branch {1} to latest version'.format(submodule.name, submodule.branch))
             pass
@@ -141,6 +146,12 @@ class Generator:
                     'path': path
                 })
         pass
+
+    def _pack_textures(self):
+        for addon in self.addons:
+            if os.path.exists(os.path.join(self._get_addon_root_path(addon), 'media')):
+                subprocess.run(['TexturePacker', '-dupecheck', '-input', 'media\\', '-output', 'media\\Textures.xbt'], cwd=self._get_addon_root_path(addon))
+        pass        
 
     def _generate_addons_file(self):
         # final addons text
