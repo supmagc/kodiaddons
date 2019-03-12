@@ -102,7 +102,7 @@ class Generator:
         print(os.getcwd() + " " + path + " >> " + rel_path)
 
         entry = (rel_path, 0) in index.entries
-        diff = index.diff(paths=[rel_path])
+        diff = index.diff(None, paths=rel_path)
 
         if not entry or (len(diff) and not diff[0].deleted_file):
             print('--> Added for commit ' + message)
