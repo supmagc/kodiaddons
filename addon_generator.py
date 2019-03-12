@@ -131,7 +131,7 @@ class Generator:
 
             module.remotes.origin.pull(submodule.branch)
             #submodule.update(init=True, to_latest_revision=True)
-            #self._git_add_file(submodule.path, 'Updated {0} on branch {1} to latest version'.format(submodule.name, submodule.branch))
+            self._git_add_file(submodule.path, 'Updated {0} on branch {1} to latest version'.format(submodule.name, submodule.branch))
             pass
 
         pass
