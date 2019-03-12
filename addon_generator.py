@@ -101,9 +101,11 @@ class Generator:
         rel_path = os.path.relpath(path).replace("\\", "/")
         print(os.getcwd() + " " + path + " >> " + rel_path)
 
-        diff = index.diff(None)
+        entry = (rel_path, 0) in index.entries
+        diff = index.diff(paths=[rel_path])
 
-        if len([i for i in diff if not i.deleted_file and i.b_path == rel_path]) > 0:
+        if not entry or (len(diff) and not diff[0].deleted_file):
+            print('--> Added for commit ' + message)
             repo.git.add(rel_path)
             repo.git.commit(m=message)
 
@@ -128,8 +130,8 @@ class Generator:
             print('Found submodule {0} on {1}'.format(submodule.name, submodule.branch))
 
             module.remotes.origin.pull(submodule.branch)
-            submodule.update(init=True, to_latest_revision=True)
-            self._git_add_file(submodule.path, 'Updated {0} on branch {1} to latest version'.format(submodule.name, submodule.branch))
+            #submodule.update(init=True, to_latest_revision=True)
+            #self._git_add_file(submodule.path, 'Updated {0} on branch {1} to latest version'.format(submodule.name, submodule.branch))
             pass
 
         pass
