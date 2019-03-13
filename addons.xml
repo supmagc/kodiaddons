@@ -14,7 +14,7 @@
 	</extension>
 </addon>
 
-<addon id="resource.images.moviegenreicons.grey.dutch" name="Movie Genre Icons - Grey - Dutch" version="0.1.0" provider-name="supmagc, Team-Kodi">
+<addon id="resource.images.moviegenreicons.grey.dutch" name="Movie Genre Icons - Grey - Dutch" version="0.1.1" provider-name="supmagc, Team-Kodi">
 	<requires>
 		<import addon="kodi.resource" version="1.0.0"/>
 	</requires>
@@ -66,7 +66,7 @@ v0.0.1
 	</extension>
 </addon>
 
-<addon id="resource.images.moviegenreicons.xzener-flat.dutch" name="Movie Genre Icons - Xzener's Flat Icons - Dutch" version="0.1.0" provider-name="supmagc, Xzener, Gade">
+<addon id="resource.images.moviegenreicons.xzener-flat.dutch" name="Movie Genre Icons - Xzener's Flat Icons - Dutch" version="0.1.1" provider-name="supmagc, Xzener, Gade">
 	<extension point="kodi.resource.images" compile="true" type="moviegenreicons" />
 	<requires>
 		<import addon="kodi.resource" version="1.0.0"/>
