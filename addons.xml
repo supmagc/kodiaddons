@@ -4,7 +4,7 @@
 	<extension point="xbmc.addon.repository" name="supmagc's Kodi Repo">
 		<info compressed="false">https://github.com/supmagc/kodi-addons/raw/master/addons.xml</info>
 		<checksum>https://github.com/supmagc/kodi-addons/raw/master/addons.xml.md5</checksum>
-		<datadir zip="true">https://github.com/supmagc/kodi-addons/raw/master/</datadir>
+		<datadir zip="true">https://github.com/supmagcbieber/kodi-addons/raw/master/</datadir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary>Add-ons and updates from supmagc's Kodi Repo</summary>
