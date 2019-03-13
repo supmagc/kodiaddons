@@ -2,9 +2,9 @@
 <addons>
 <addon id="repository.supmagc" name="supmagc's Kodi Repo" version="1.2.1" provider-name="supmagc">
 	<extension point="xbmc.addon.repository" name="supmagc's Kodi Repo">
-		<info compressed="false">https://raw.githubusercontent.com/supmagc/kodi-addons/master/addons.xml</info>
-		<checksum>https://raw.githubusercontent.com/supmagc/kodi-addons/master/addons.xml.md5</checksum>
-		<datadir zip="true">https://raw.githubusercontent.com/supmagc/kodi-addons/master/</datadir>
+		<info compressed="false">https://github.com/supmagc/kodi-addons/raw/master/addons.xml</info>
+		<checksum>https://github.com/supmagc/kodi-addons/raw/master/addons.xml.md5</checksum>
+		<datadir zip="true">https://github.com/supmagc/kodi-addons/raw/master/</datadir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary>Add-ons and updates from supmagc's Kodi Repo</summary>
@@ -34,6 +34,7 @@ Under the following terms:
 	> ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</disclaimer>
 		<news lang="en_GB">v0.1.0
 - Make Krypton compatible
+- Added dutch translations
 
 v0.0.7
 - Fix potential texture issues
@@ -65,15 +66,47 @@ v0.0.1
 	</extension>
 </addon>
 
-<addon id="resource.images.moviegenreicons.xzener-flat.dutch" name="Movie Genre Icons - Xzener's Flat Icons - Dutch" version="0.0.3" provider-name="Xzener, Gade">
+<addon id="resource.images.moviegenreicons.xzener-flat.dutch" name="Movie Genre Icons - Xzener's Flat Icons - Dutch" version="0.1.0" provider-name="supmagc, Xzener, Gade">
 	<extension point="kodi.resource.images" compile="true" type="moviegenreicons" />
 	<requires>
 		<import addon="kodi.resource" version="1.0.0"/>
 	</requires>
+	<extension point="kodi.resource.images" compile="true" type="moviegenreicons" />
 	<extension point="xbmc.addon.metadata">
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<license>Creative Commons Attribution-Share Alike 3.0 United States License</license>
+		<platform>all</platform>
+		<language></language>
 		<summary lang="en">Xcener's Flat Movie Genre Icons Dutch</summary>
 		<description lang="en">Transparent flat Movie Genre Icons Dutch original made by Xzener.</description>
-		<platform>all</platform>
+		<disclaimer lang="en_GB">You are free to:
+	> Share - Copy and redistribute the material in any medium or format.
+	> Adapt - Remix, transform, and build upon the material for any purpose, even commercially.
+
+Under the following terms:
+	> Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+	> ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</disclaimer>
+		<news lang="en_GB">v0.1.0
+- Make Krypton compatible
+- Added dutch translations
+
+[B]0.0.3 (30-April-16)[/B]
+- Fix potential texture issuea
+
+[B]0.0.2 (26-January-16)[/B]
+- Add info file
+
+[B]0.0.1 (17-September-15)[/B]
+- Initial release
+</news>
+		<forum></forum>
+		<website>https://github.com/supmagc/kodi-resource.images.moviegenreicons.xzener-flat.dutch</website>
+		<source>https://github.com/supmagc/kodi-resource.images.moviegenreicons.xzener-flat.dutch</source>
+		<email>supmagc at gmail dot com</email>
+		<assets>
+			<icon>resources/icon.png</icon>
+		</assets>
 	</extension>
 </addon>
 </addons>
