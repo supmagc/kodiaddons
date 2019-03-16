@@ -153,6 +153,8 @@ class Generator:
         for addon in self.addons:
             if os.path.exists(os.path.join(self._get_addon_root_path(addon), 'media')):
                 subprocess.run(['TexturePacker', '-dupecheck', '-input', 'media\\', '-output', 'media\\Textures.xbt'], cwd=self._get_addon_root_path(addon))
+            if os.path.exists(os.path.join(self._get_addon_root_path(addon), 'src')):
+                subprocess.run(['TexturePacker', '-dupecheck', '-input', 'src\\', '-output', 'resources\\Textures.xbt'], cwd=self._get_addon_root_path(addon))
         pass        
 
     def _generate_addons_file(self):
@@ -238,7 +240,7 @@ class Generator:
                     for file_name in files:
                         file_path = os.path.join(root, file_name)
                         file_zip_path = os.path.join(root_zip_path, file_name)
-                        if file_name.endswith('.zip') or file_name.startswith("."):
+                        if file_name.endswith('.zip') or file_name.startswith(".") or file_name.startswith('src'):
                             continue
                         print('Adding {0} as {1} to {2}'.format(file_path, file_zip_path, zip_path))
                         addon_zip.write(file_path, file_zip_path)
