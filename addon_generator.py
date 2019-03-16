@@ -245,7 +245,7 @@ class Generator:
                         if (
                             file_name.endswith('.zip') or 
                             file_name.startswith(".") or 
-                            (rel_path.startswith('media') and (rel_path.endswith('.jpg') or rel_path.endswith('.png')))
+                            (rel_path.startswith('media') and (file_name.endswith('.jpg') or file_name.endswith('.png')))
                         ):
                             continue
                         print('Adding {0} as {1} to {2}'.format(file_path, file_zip_path, zip_path))
