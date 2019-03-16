@@ -236,11 +236,17 @@ class Generator:
                     rel_path = os.path.relpath(root, addon_path)
                     if rel_path == ".": rel_path = ""
                     root_zip_path = os.path.join(addon_name, rel_path)
+                    if rel_path.startswith('src'):
+                        continue
                     addon_zip.write(root, root_zip_path)
                     for file_name in files:
                         file_path = os.path.join(root, file_name)
                         file_zip_path = os.path.join(root_zip_path, file_name)
-                        if file_name.endswith('.zip') or file_name.startswith(".") or file_name.startswith('src'):
+                        if (
+                            file_name.endswith('.zip') or 
+                            file_name.startswith(".") or 
+                            (rel_path.startswith('media') and (rel_path.endswith('.jpg') or rel_path.endswith('.png')))
+                        ):
                             continue
                         print('Adding {0} as {1} to {2}'.format(file_path, file_zip_path, zip_path))
                         addon_zip.write(file_path, file_zip_path)
