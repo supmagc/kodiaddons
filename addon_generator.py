@@ -263,6 +263,18 @@ class Generator:
         print('Pushed content to remote on develop')
         print('Merge to master manually if verified')
 
+        val = input('Automatically merge to master ? (y|n): ')
+        if val == "y":
+            print('Automatically merging to master')
+            current = repo.active_branch
+            develop = repo.branches['develop']
+            repo.heads.master.checkout()
+            base = repo.merge_base(current, develop)
+            repo.index.merge_tree(develop, base=base)
+            repo.index.commit('Merge develop into master', parent_commits=(current.commit, develop.commit))
+            current.checkout(force=True)
+            origin.push('master:master')
+
 
 if (__name__ == "__main__"):
     # start
