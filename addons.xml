@@ -14,7 +14,7 @@
 	</extension>
 </addon>
 
-<addon id="resource.images.moviegenreicons.grey-dutch" name="Movie Genre Icons - Grey - Dutch" version="0.1.4" provider-name="supmagc, Team-Kodi">
+<addon id="resource.images.moviegenreicons.grey-dutch" name="Movie Genre Icons - Grey - Dutch" version="0.2.0" provider-name="supmagc, Team-Kodi">
 	<requires>
 		<import addon="kodi.resource" version="1.0.0"/>
 	</requires>
@@ -32,7 +32,10 @@
 Under the following terms:
 	> Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
 	> ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</disclaimer>
-		<news lang="en_GB">v0.1.3
+		<news lang="en_GB">v0.2.0
+- Let's hope automated building works when the version is correct
+
+v0.1.3
 - Improved compatibility
 
 v0.1.0
@@ -69,7 +72,7 @@ v0.0.1
 	</extension>
 </addon>
 
-<addon id="resource.images.moviegenreicons.xzener-flat-dutch" name="Movie Genre Icons - Xzener's Flat Icons - Dutch" version="0.1.3" provider-name="supmagc, Xzener, Gade">
+<addon id="resource.images.moviegenreicons.xzener-flat-dutch" name="Movie Genre Icons - Xzener's Flat Icons - Dutch" version="0.2.0" provider-name="supmagc, Xzener, Gade">
 	<extension point="kodi.resource.images" compile="true" type="moviegenreicons" />
 	<requires>
 		<import addon="kodi.resource" version="1.0.0"/>
@@ -88,7 +91,10 @@ v0.0.1
 Under the following terms:
 	> Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
 	> ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</disclaimer>
-		<news lang="en_GB">v0.1.0
+		<news lang="en_GB">v0.2.0
+- Let's hope automated building works when the version is correct
+
+v0.1.0
 - Make Krypton compatible
 - Added dutch translations
 
@@ -99,8 +105,7 @@ Under the following terms:
 - Add info file
 
 [B]0.0.1 (17-September-15)[/B]
-- Initial release
-</news>
+- Initial release</news>
 		<forum></forum>
 		<website>https://github.com/supmagc/kodi-resource.images.moviegenreicons.xzener-flat.dutch</website>
 		<source>https://github.com/supmagc/kodi-resource.images.moviegenreicons.xzener-flat.dutch</source>
