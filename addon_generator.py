@@ -228,11 +228,11 @@ class Generator:
 
     def _get_plugin_icon(self, addon):
         element = self._get_plugin_elmenttree(addon).find('.//assets/icon')
-        return element.text if element else None
+        return element.text if element != None else None
 
     def _get_plugin_fanart(self, addon):
         element = self._get_plugin_elmenttree(addon).find('.//assets/fanart')
-        return element.text if element else None
+        return element.text if element != None else None
 
     def _package_addons(self):
         for addon in self.addons:
@@ -276,11 +276,15 @@ class Generator:
             icon = self._get_plugin_icon(addon)
             if icon:
                 icon_target = os.path.join(addon_zip_dir, icon)
+                if not os.path.exists(os.path.dirname(icon_target)):
+                    os.makedirs(os.path.dirname(icon_target))
                 copyfile(os.path.join(addon_path, icon), icon_target)
                 self._git_add_file(icon_target, 'Copied icon for {0}'.format(addon_name))
-            fanart = self._get_plugin_icon(addon)
+            fanart = self._get_plugin_fanart(addon)
             if fanart:
                 fanart_target = os.path.join(addon_zip_dir, fanart)
+                if not os.path.exists(os.path.dirname(fanart_target)):
+                    os.makedirs(os.path.dirname(fanart_target))
                 copyfile(os.path.join(addon_path, fanart), fanart_target)
                 self._git_add_file(fanart_target, 'Copied fanart for {0}'.format(addon_name))
 
