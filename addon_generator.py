@@ -215,32 +215,24 @@ class Generator:
         except Exception as e:
             print('An error occurred creating {0} file!\n{1}'.format(addons_xml_md5_path, e))
 
-    def _get_plugin_version(self, addon):
+    def _get_plugin_elmenttree(self, addon):
         addon_xml = self._get_addon_xml_path(addon)
         try:
             data = open(addon_xml, 'r').read()
-            node = xml.etree.ElementTree.XML(data)
-            return node.get('version')
+            return xml.etree.ElementTree.fromstring(data)
         except Exception as e:
-            print('Failed to open {0} to extract version\n{1}'.format(addon_xml, e))
+            print('Failed to open {0}'.format(addon_xml))
+
+    def _get_plugin_version(self, addon):
+        return self._get_plugin_elmenttree(addon).get('version')
 
     def _get_plugin_icon(self, addon):
-        addon_xml = self._get_addon_xml_path(addon)
-        try:
-            data = open(addon_xml, 'r').read()
-            node = xml.etree.ElementTree.XML(data)
-            return node.find('//assets/icon').text
-        except Exception as e:
-            print('Failed to open {0} to extract icon\n{1}'.format(addon_xml, e))
+        element = self._get_plugin_elmenttree(addon).find('.//assets/icon')
+        return element.text if element else None
 
     def _get_plugin_fanart(self, addon):
-        addon_xml = self._get_addon_xml_path(addon)
-        try:
-            data = open(addon_xml, 'r').read()
-            node = xml.etree.ElementTree.XML(data)
-            return node.find('//assets/fanart').text
-        except Exception as e:
-            print('Failed to open {0} to extract version\n{1}'.format(addon_xml, e))
+        element = self._get_plugin_elmenttree(addon).find('.//assets/fanart')
+        return element.text if element else None
 
     def _package_addons(self):
         for addon in self.addons:
