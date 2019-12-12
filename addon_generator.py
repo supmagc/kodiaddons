@@ -229,7 +229,7 @@ class Generator:
         try:
             data = open(addon_xml, 'r').read()
             node = xml.etree.ElementTree.XML(data)
-            return node.find('icon').text
+            return node.find('//assets/icon').text
         except Exception as e:
             print('Failed to open {0} to extract icon\n{1}'.format(addon_xml, e))
 
@@ -238,7 +238,7 @@ class Generator:
         try:
             data = open(addon_xml, 'r').read()
             node = xml.etree.ElementTree.XML(data)
-            return node.find('fanart').text
+            return node.find('//assets/fanart').text
         except Exception as e:
             print('Failed to open {0} to extract version\n{1}'.format(addon_xml, e))
 
