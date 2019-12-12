@@ -116,10 +116,10 @@ class Generator:
         origin = repo.remotes.origin
         assert origin.exists()
 
-        print('Fetching and pulling kodiaddons repo on develop.')
+        print('Fetching and pulling kodiaddons repo on master.')
         origin.fetch()
         origin.pull()
-        repo.heads.develop.checkout()
+        repo.heads.master.checkout()
 
         submodules = repo.submodules
         for submodule in submodules:
@@ -259,21 +259,10 @@ class Generator:
         assert not repo.bare
         origin = repo.remotes.origin
         assert origin.exists()
-        origin.push('develop:develop')
-        print('Pushed content to remote on develop')
-        print('Merge to master manually if verified')
-
-        val = input('Automatically merge to master ? (y|n): ')
+        val = input('Automatically push to remote master ? (y|n): ')
         if val == "y":
-            print('Automatically merging to master')
-            current = repo.active_branch
-            develop = repo.branches['develop']
-            repo.heads.master.checkout()
-            base = repo.merge_base(current, develop)
-            repo.index.merge_tree(develop, base=base)
-            repo.index.commit('Merge develop into master', parent_commits=(current.commit, develop.commit))
-            current.checkout(force=True)
             origin.push('master:master')
+            print('Pushed content to remote on master')
 
 
 if (__name__ == "__main__"):
