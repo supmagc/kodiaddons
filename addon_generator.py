@@ -25,7 +25,7 @@ import os
 import sys
 from git import Repo, RemoteProgress
 from zipfile import ZipFile
-from shutil import copytree, ignore_patterns, rmtree
+from shutil import copytree, ignore_patterns, rmtree, copyfile
 
 # Compatibility with 3.0, 3.1 and 3.2 not supporting u"" literals
 if sys.version < '3':
@@ -61,6 +61,7 @@ class Generator:
         self._generate_addons_file()
         self._generate_md5_file()
         self._package_addons()
+        self._copy_assets()
         self._git_commit_push()
 
     def _get_src_root_path(self):
@@ -78,8 +79,11 @@ class Generator:
     def _get_addons_xml_md5_path(self):
         return os.path.join(os.getcwd(), "addons.xml.md5")
 
+    def _get_zip_dir(self, addon):
+        return os.path.join(os.getcwd(), addon['name'])
+
     def _get_zip_path(self, addon, version):
-        return os.path.join(os.getcwd(), addon['name'], addon['name'] + '-' + version + '.zip')
+        return os.path.join(self._get_zip_dir(addon), addon['name'] + '-' + version + '.zip')
 
     def _load_file(self, file):
         try:
@@ -220,6 +224,24 @@ class Generator:
         except Exception as e:
             print('Failed to open {0} to extract version\n{1}'.format(addon_xml, e))
 
+    def _get_plugin_icon(self, addon):
+        addon_xml = self._get_addon_xml_path(addon)
+        try:
+            data = open(addon_xml, 'r').read()
+            node = xml.etree.ElementTree.XML(data)
+            return node.find('icon').text
+        except Exception as e:
+            print('Failed to open {0} to extract icon\n{1}'.format(addon_xml, e))
+
+    def _get_plugin_fanart(self, addon):
+        addon_xml = self._get_addon_xml_path(addon)
+        try:
+            data = open(addon_xml, 'r').read()
+            node = xml.etree.ElementTree.XML(data)
+            return node.find('fanart').text
+        except Exception as e:
+            print('Failed to open {0} to extract version\n{1}'.format(addon_xml, e))
+
     def _package_addons(self):
         for addon in self.addons:
             addon_name = addon['name']
@@ -253,6 +275,21 @@ class Generator:
                 addon_zip.close()
                 self._git_add_file(zip_path, 'Generated zip file for {0} at {1}'.format(addon_name, version))
                 print('Merged addon {0} into {1}'.format(addon['name'], zip_path))
+
+    def _copy_assets(self):
+        for addon in self.addons:
+            addon_name = addon['name']
+            addon_path = addon['path']
+            addon_zip_dir = self._get_zip_dir(addon)
+            icon = self._get_plugin_icon(addon)
+            fanart = self._get_plugin_icon(addon)
+            icon_target = os.path.join(addon_zip_dir, icon)
+            fanart_target = os.path.join(addon_zip_dir, fanart)
+            copyfile(os.path.join(addon_path, icon), icon_target)
+            copyfile(os.path.join(addon_path, fanart), fanart_target)
+            self._git_add_file(icon_target, 'Copied icon for {0}'.format(addon_name))
+            self._git_add_file(fanart_target, 'Copied fanart for {0}'.format(addon_name))
+
 
     def _git_commit_push(self):
         repo = Repo(os.getcwd())
