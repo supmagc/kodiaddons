@@ -282,13 +282,15 @@ class Generator:
             addon_path = addon['path']
             addon_zip_dir = self._get_zip_dir(addon)
             icon = self._get_plugin_icon(addon)
+            if icon:
+                icon_target = os.path.join(addon_zip_dir, icon)
+                copyfile(os.path.join(addon_path, icon), icon_target)
+                self._git_add_file(icon_target, 'Copied icon for {0}'.format(addon_name))
             fanart = self._get_plugin_icon(addon)
-            icon_target = os.path.join(addon_zip_dir, icon)
-            fanart_target = os.path.join(addon_zip_dir, fanart)
-            copyfile(os.path.join(addon_path, icon), icon_target)
-            copyfile(os.path.join(addon_path, fanart), fanart_target)
-            self._git_add_file(icon_target, 'Copied icon for {0}'.format(addon_name))
-            self._git_add_file(fanart_target, 'Copied fanart for {0}'.format(addon_name))
+            if fanart:
+                fanart_target = os.path.join(addon_zip_dir, fanart)
+                copyfile(os.path.join(addon_path, fanart), fanart_target)
+                self._git_add_file(fanart_target, 'Copied fanart for {0}'.format(addon_name))
 
 
     def _git_commit_push(self):
