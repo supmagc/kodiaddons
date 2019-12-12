@@ -50,4 +50,25 @@
 		</assets>
 	</extension>
 </addon>
+
+<addon id="script.steam.startcommand" name="Steam Start" version="1.0.0" provider-name="supmagc">
+    <requires>
+        <import addon="xbmc.python" version="2.25.0"/>
+    </requires>
+    <extension point="xbmc.python.script" library="addon.py">
+        <provides>game executable</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <platform>linux</platform>
+        <summary lang="en_GB">Internet Archive Game Launcher</summary>
+        <description lang="en_GB">The Internet Archive Game Launcher (IAGL) is a FREE Kodi addon that will browse and launch games available from the Internet</description>
+        <license>CC BY-SA 3.0 - Creative Commons Attribution-Share Alike 3.0 United States License</license>
+        <source>https://github.com/supmagc/kodi-plugin.program.steamstart</source>
+        <email>supmagc at gmail dot com</email>
+        <assets>
+            <icon>resources/icon.png</icon>
+            <fanart>resources/fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
 </addons>
