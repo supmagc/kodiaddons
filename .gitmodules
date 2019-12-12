@@ -10,3 +10,7 @@
 	path = src/resource.images.moviegenreicons.grey-dutch
 	url = git@github.com:supmagc/kodi-resource.images.moviegenreicons.grey-dutch.git
 	branch = master
+[submodule "src/script.steam.startcommand"]
+	path = src/script.steam.startcommand
+	url = git@github.com:supmagc/kodi-script.steam.startcommand.git
+	branch = master
