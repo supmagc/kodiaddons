@@ -51,7 +51,7 @@
 	</extension>
 </addon>
 
-<addon id="script.steam.startcommand" name="Steam Start" version="1.0.0" provider-name="supmagc">
+<addon id="script.steam.startcommand" name="Steam Start" version="1.0.1" provider-name="supmagc">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
     </requires>
